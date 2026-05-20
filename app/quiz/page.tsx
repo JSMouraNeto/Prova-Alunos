@@ -362,6 +362,15 @@ export default function QuizPage() {
       {/* Truth table */}
       {q.table && <TruthTable table={q.table} />}
 
+      {/* Footnote — glossário do conceito cobrado */}
+      {q.footnote && (
+        <div className="mb-5 px-3 py-2.5 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60">
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed whitespace-pre-line">
+            {q.footnote}
+          </p>
+        </div>
+      )}
+
       {hintShown && (
         <div className="mb-6 border-l-2 border-orange-400 dark:border-orange-600 pl-4 py-1 animate-pop rounded-r-lg bg-orange-50 dark:bg-orange-950">
           <p className="text-sm text-orange-700 dark:text-orange-300 leading-relaxed whitespace-pre-line">

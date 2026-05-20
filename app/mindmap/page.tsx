@@ -29,7 +29,7 @@ export default function MindmapPage() {
 
         {/* SVG map */}
         <div className="w-full lg:flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
-          <svg viewBox="0 0 870 560" className="w-full h-auto">
+          <svg viewBox="0 0 1200 830" className="w-full h-auto">
             {mindLinks.map((link, i) => {
               const fromNode = link.from === "center" ? mindmapCenter : getNode(link.from);
               const toNode   = link.to   === "center" ? mindmapCenter : getNode(link.to);
@@ -49,11 +49,11 @@ export default function MindmapPage() {
 
             {/* Center node */}
             <g className="mm-node" onClick={() => setSelected(null)} role="button" aria-label="Centro — Eletrônica e Sistemas Digitais">
-              <circle cx={mindmapCenter.cx} cy={mindmapCenter.cy} r={58} fill="#2563eb" opacity="0.07" />
-              <circle cx={mindmapCenter.cx} cy={mindmapCenter.cy} r={50} fill="#2563eb" />
-              <text x={mindmapCenter.cx} y={mindmapCenter.cy - 9}  textAnchor="middle" fill="#fff"    fontSize="12" fontWeight="700">Eletrônica</text>
-              <text x={mindmapCenter.cx} y={mindmapCenter.cy + 7}  textAnchor="middle" fill="#bfdbfe" fontSize="10">&amp; Sistemas</text>
-              <text x={mindmapCenter.cx} y={mindmapCenter.cy + 22} textAnchor="middle" fill="#bfdbfe" fontSize="10">Digitais</text>
+              <circle cx={mindmapCenter.cx} cy={mindmapCenter.cy} r={72} fill="#2563eb" opacity="0.07" />
+              <circle cx={mindmapCenter.cx} cy={mindmapCenter.cy} r={62} fill="#2563eb" />
+              <text x={mindmapCenter.cx} y={mindmapCenter.cy - 11} textAnchor="middle" fill="#fff"    fontSize="13" fontWeight="700">Eletrônica</text>
+              <text x={mindmapCenter.cx} y={mindmapCenter.cy + 6}  textAnchor="middle" fill="#bfdbfe" fontSize="11">&amp; Sistemas</text>
+              <text x={mindmapCenter.cx} y={mindmapCenter.cy + 23} textAnchor="middle" fill="#bfdbfe" fontSize="11">Digitais</text>
             </g>
 
             {mindNodes.map((node) => {
