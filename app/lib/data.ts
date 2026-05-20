@@ -14,6 +14,14 @@ export interface StudyCard {
 
 export interface QuizOption { id: string; text: string }
 
+export interface QuizTable {
+  headers: string[];
+  rows: string[][];
+  highlights?: number[];  // row indices with F=1 or otherwise notable
+}
+
+export type QuizGate = "AND" | "OR" | "NOT" | "NAND" | "NOR" | "XOR";
+
 export interface QuizQuestion {
   id: string;
   category: string;
@@ -24,6 +32,8 @@ export interface QuizQuestion {
   explanation: string;
   hint: string;        // shown behind 💡
   requiresCalc: boolean;
+  table?: QuizTable;
+  gate?: QuizGate;
 }
 
 // ═══════════════════════════════════════════
@@ -365,7 +375,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "b",
     explanation:
       "Req = R₁ + R₂ = 3 + 5 = 8 kΩ = 8.000 Ω. V = I × Req = 0,004 A × 8.000 Ω = 32 V. Erro comum: usar apenas R₁ ou não converter kΩ → Ω e mA → A.",
-    hint: "Bizu: Em série Req = R₁ + R₂. V = I × Req. Converta SEMPRE: 4 mA = 0,004 A; 8 kΩ = 8.000 Ω.",
+    hint: "Bizu: Em série Req = R₁ + R₂.\nV = I × Req.\nConverta SEMPRE: 4 mA = 0,004 A; 8 kΩ = 8.000 Ω.",
     requiresCalc: true,
   },
   {
@@ -383,7 +393,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "c",
     explanation:
       "Req = 3 + 5 = 8 kΩ. V_R₂ = I × R₂ = 0,004 × 5.000 = 20 V. Verificação pelo divisor: V_R₂ = 32 × (5/8) = 20 V ✓. V_R₁ = 12 V → 12+20 = 32 V = V_fonte ✓.",
-    hint: "Bizu: V_Rn = I × Rn. Ou divisor: V_Rn = Vtotal × (Rn/Req). Confira: soma das quedas = V_fonte.",
+    hint: "Bizu: V_Rn = I × Rn.\nOu divisor: V_Rn = Vtotal × (Rn/Req).\nConfira: soma das quedas = V_fonte.",
     requiresCalc: true,
   },
   {
@@ -401,7 +411,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "c",
     explanation:
       "Req = 4 kΩ = 4.000 Ω. V = 0,005 × 4.000 = 20 V. Resistores iguais → queda igual: V_Rn = 0,005 × 2.000 = 10 V. Soma: 10+10 = 20 V ✓.",
-    hint: "Bizu: Resistores iguais em série dividem tensão igualmente. V_Rn = I × Rn. 5 mA = 0,005 A; 2 kΩ = 2.000 Ω.",
+    hint: "Bizu: Resistores iguais em série dividem tensão igualmente.\nV_Rn = I × Rn.\n5 mA = 0,005 A; 2 kΩ = 2.000 Ω.",
     requiresCalc: true,
   },
   {
@@ -419,7 +429,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "a",
     explanation:
       "Req = 1+3+2 = 6 kΩ = 6.000 Ω. I = 18/6.000 = 0,003 A = 3 mA. V_R₂ = 0,003 × 3.000 = 9 V. Verifique: V₁=3V, V₂=9V, V₃=6V → soma = 18 V ✓.",
-    hint: "Bizu: I = V_fonte / Req. V_Rn = I × Rn. Verifique: soma das quedas = V_fonte.",
+    hint: "Bizu: Req = ΣRn.\nI = V_fonte / Req.\nV_Rn = I × Rn.\nVerifique: ΣV_Rn = V_fonte.",
     requiresCalc: true,
   },
 
@@ -523,7 +533,21 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Álgebra Booleana",
     difficulty: "muito difícil",
     question:
-      "Tabela-verdade (A, B, C):\n  linha 0:(0,0,0)→F=0\n  linha 1:(0,0,1)→F=1\n  linha 2:(0,1,0)→F=0\n  linha 3:(0,1,1)→F=1\n  linha 4:(1,0,0)→F=1\n  linha 5:(1,0,1)→F=0\n  linha 6:(1,1,0)→F=0\n  linha 7:(1,1,1)→F=0\nQual é a expressão em soma de mintermos?",
+      "Dada a tabela-verdade abaixo, qual é a expressão F em soma de mintermos (SOP)?",
+    table: {
+      headers: ["Linha", "A", "B", "C", "F"],
+      rows: [
+        ["0", "0", "0", "0", "0"],
+        ["1", "0", "0", "1", "1"],
+        ["2", "0", "1", "0", "0"],
+        ["3", "0", "1", "1", "1"],
+        ["4", "1", "0", "0", "1"],
+        ["5", "1", "0", "1", "0"],
+        ["6", "1", "1", "0", "0"],
+        ["7", "1", "1", "1", "0"],
+      ],
+      highlights: [1, 3, 4],
+    },
     options: [
       { id: "a", text: "F = Ā·B̄·C + Ā·B·C + A·B̄·C̄" },
       { id: "b", text: "F = A·B·C + A·B̄·C + Ā·B·C̄" },
@@ -541,7 +565,21 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Álgebra Booleana",
     difficulty: "muito difícil",
     question:
-      "Para a tabela da questão anterior (F=0 nas linhas 0, 2, 5, 6, 7), qual é a expressão em produto de maxtermos?",
+      "Usando a mesma tabela-verdade, qual é a expressão F em produto de maxtermos (POS)?",
+    table: {
+      headers: ["Linha", "A", "B", "C", "F"],
+      rows: [
+        ["0", "0", "0", "0", "0"],
+        ["1", "0", "0", "1", "1"],
+        ["2", "0", "1", "0", "0"],
+        ["3", "0", "1", "1", "1"],
+        ["4", "1", "0", "0", "1"],
+        ["5", "1", "0", "1", "0"],
+        ["6", "1", "1", "0", "0"],
+        ["7", "1", "1", "1", "0"],
+      ],
+      highlights: [0, 2, 5, 6, 7],
+    },
     options: [
       { id: "a", text: "F = Ā·B̄·C + Ā·B·C + A·B̄·C̄" },
       { id: "b", text: "F = (A+B+C)·(A+B̄+C)·(Ā+B+C̄)·(Ā+B̄+C)·(Ā+B̄+C̄)" },
@@ -559,7 +597,18 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Álgebra Booleana",
     difficulty: "muito difícil",
     question:
-      "Tabela de 2 variáveis: F=1 apenas para (A=0,B=1) e (A=1,B=0). Qual expressão e porta lógica representam F?",
+      "A tabela abaixo mostra uma função F(A, B). Qual expressão booleana e porta lógica representam F?",
+    table: {
+      headers: ["A", "B", "F"],
+      rows: [
+        ["0", "0", "0"],
+        ["0", "1", "1"],
+        ["1", "0", "1"],
+        ["1", "1", "0"],
+      ],
+      highlights: [1, 2],
+    },
+    gate: "XOR",
     options: [
       { id: "a", text: "F = A·B  →  AND" },
       { id: "b", text: "F = A+B  →  OR" },
@@ -656,6 +705,7 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "difícil",
     question:
       "Um circuito tem 2 entradas (A, B) e 2 saídas: S = A ⊕ B e C = A · B. Que circuito é esse e qual sua principal limitação?",
+    gate: "XOR",
     options: [
       { id: "a", text: "Full Adder — não suporta operações de subtração" },
       { id: "b", text: "Comparador — não distingue magnitude entre A e B" },
@@ -683,7 +733,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "a",
     explanation:
       "S = A⊕B⊕Cin = 1⊕0⊕1 = 1⊕1 = 0. Cout = A·B + Cin·(A⊕B) = 1·0 + 1·1 = 1. Resultado: 10₂ = 2₁₀. Correto: 1+0+1 = 2 ✓.",
-    hint: "Bizu: S=A⊕B⊕Cin. Cout=A·B+Cin·(A⊕B). Para 1+0+1=2=10₂: S=0, Cout=1.",
+    hint: "Bizu: S = A⊕B⊕Cin.\nCout = A·B + Cin·(A⊕B).\nPara 1+0+1 = 2 = 10₂: S=0, Cout=1.",
     requiresCalc: true,
   },
 
@@ -732,6 +782,7 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "difícil",
     question:
       "Porta NAND com entradas A=1, B=1. Qual a saída? E com A=1, B=0?",
+    gate: "NAND",
     options: [
       { id: "a", text: "S(1,1)=1  e  S(1,0)=0" },
       { id: "b", text: "S(1,1)=0  e  S(1,0)=0" },
@@ -741,7 +792,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "c",
     explanation:
       "NAND = NOT(AND). (1,1): AND=1 → NAND=0. (1,0): AND=0 → NAND=1. NAND só produz 0 quando TODAS entradas = 1.",
-    hint: "Bizu: NAND = NOT(A·B). Saída=0 só quando A=1 E B=1. Qualquer entrada 0 → saída=1.",
+    hint: "Bizu: NAND = NOT(A·B).\nSaída=0 só quando A=1 E B=1.\nQualquer entrada 0 → saída=1.",
     requiresCalc: false,
   },
   {
@@ -750,6 +801,7 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "difícil",
     question:
       "Por que NAND e NOR são chamadas de portas UNIVERSAIS?",
+    gate: "NAND",
     options: [
       { id: "a", text: "São as mais rápidas em CIs integrados de última geração" },
       { id: "b", text: "Podem ser combinadas para implementar qualquer função booleana (AND, OR, NOT e derivadas)" },
@@ -767,17 +819,18 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Portas Lógicas",
     difficulty: "muito difícil",
     question:
-      "Aplique o Teorema De Morgan para simplificar ~(A · B · C):",
+      "Aplique o Teorema De Morgan para simplificar $\\overline{A \\cdot B \\cdot C}$:",
+    gate: "NAND",
     options: [
-      { id: "a", text: "~A · ~B · ~C" },
-      { id: "b", text: "~A + ~B + ~C" },
+      { id: "a", text: "$\\bar{A}$ · $\\bar{B}$ · $\\bar{C}$" },
+      { id: "b", text: "$\\bar{A}$ + $\\bar{B}$ + $\\bar{C}$" },
       { id: "c", text: "A + B + C" },
-      { id: "d", text: "~(A + B + C)" },
+      { id: "d", text: "$\\overline{A + B + C}$" },
     ],
     correct: "b",
     explanation:
-      "De Morgan para 3 variáveis: ~(A·B·C) = ~A + ~B + ~C. Regra: 'quebre a barra, troque AND↔OR'. Verificação: A=1,B=1,C=0 → ~(1·1·0)=~0=1. ~A+~B+~C=0+0+1=1 ✓.",
-    hint: "Bizu: De Morgan — 'quebre a barra, troque AND↔OR'. ~(X·Y·Z) = ~X+~Y+~Z.",
+      "De Morgan para 3 variáveis: $\\overline{A \\cdot B \\cdot C}$ = $\\bar{A}$ + $\\bar{B}$ + $\\bar{C}$. Regra: 'quebre a barra, troque AND↔OR'. Verificação: A=1,B=1,C=0 → $\\overline{1 \\cdot 1 \\cdot 0}$ = $\\bar{0}$ = 1. $\\bar{A}$+$\\bar{B}$+$\\bar{C}$ = 0+0+1 = 1 ✓.",
+    hint: "Bizu: De Morgan — 'quebre a barra, troque AND↔OR'.\n$\\overline{X \\cdot Y \\cdot Z}$ = $\\bar{X}$ + $\\bar{Y}$ + $\\bar{Z}$.",
     requiresCalc: false,
   },
   {
@@ -815,7 +868,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "b",
     explanation:
       "1/RT = 1/4 + 1/6 = 3/12 + 2/12 = 5/12 → RT = 2,4 Ω. I₁=12/4=3A. I₂=12/6=2A. IT=5A. Verificação: IT=V/RT=12/2,4=5A ✓.",
-    hint: "Bizu: 1/RT = 1/R₁ + 1/R₂. In = V/Rn (tensão igual em paralelo). IT = ΣIn.",
+    hint: "Bizu: 1/RT = 1/R₁ + 1/R₂.\nIn = V/Rn (tensão igual em paralelo).\nIT = ΣIn.",
     requiresCalc: true,
   },
   {
@@ -833,7 +886,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "c",
     explanation:
       "I = 16/8.000 = 2 mA. P₁=(0,002)²×2.000=8mW. P₂=(0,002)²×6.000=24mW. Em série, corrente igual → maior R = maior potência.",
-    hint: "Bizu: Em série I é igual. P = I²×R. Maior R → maior P. I=V/Req.",
+    hint: "Bizu: Em série I é igual em todos os resistores.\nP = I²×R → maior R = maior P.\nI = V/Req.",
     requiresCalc: true,
   },
   {
@@ -851,7 +904,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "d",
     explanation:
       "P = I²×R → I = √(P/R). 400 mW = 0,4 W. I = √(0,4/100) = √0,004 ≈ 0,0632 A = 63 mA. Verificação: (0,0632)²×100 ≈ 0,4 W ✓.",
-    hint: "Bizu: P = I²×R → I = √(P/R). Converta mW→W antes: 400mW = 0,4W.",
+    hint: "Bizu: P = I²×R → I = √(P/R).\nConverta mW→W antes: 400 mW = 0,4 W.\nI = √(0,4 / 100) ≈ 63 mA.",
     requiresCalc: true,
   },
 
@@ -1041,7 +1094,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "c",
     explanation:
       "T = 6+4 = 10 ms = 0,01 s. f = 1/0,01 = 100 Hz. DC = t_HIGH/T×100% = 6/10×100% = 60%.",
-    hint: "Bizu: T = t_alto + t_baixo. f = 1/T(em s). DC = t_alto/T × 100%.",
+    hint: "Bizu: T = t_HIGH + t_LOW.\nf = 1/T (em segundos).\nDC = t_HIGH / T × 100%.",
     requiresCalc: true,
   },
   {
@@ -1077,7 +1130,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "a",
     explanation:
       "6+7=13₁₀. Bit a bit: b0:0+1=1(c=0); b1:1+1=0(c=1); b2:1+1+1=1(c=1); b3:0+0+1=1(c=0). Resultado=1101₂, Cout=0. 13<16 → cabe em 4 bits.",
-    hint: "Bizu: 6+7=13=1101₂. 13<16 → sem overflow. Cout=0.",
+    hint: "Bizu: 6 + 7 = 13 = 1101₂.\n13 < 16 → cabe em 4 bits → sem overflow.\nCout = 0.",
     requiresCalc: true,
   },
   {
@@ -1086,6 +1139,7 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "muito difícil",
     question:
       "Quais expressões implementam CORRETAMENTE o Half Adder?\nI. S = A XOR B\nII. Carry = A AND B\nIII. Carry = A OR B\nIV. S = A AND B",
+    gate: "XOR",
     options: [
       { id: "a", text: "I e II" },
       { id: "b", text: "I e III" },

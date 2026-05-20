@@ -1,7 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { quizQuestions, QuizQuestion } from "@/app/lib/data";
+import { quizQuestions, QuizQuestion, QuizTable } from "@/app/lib/data";
+import MathText from "@/app/components/MathText";
+import LogicGate from "@/app/components/LogicGate";
 
 type AnswerState = { chosen: string; correct: boolean };
 
@@ -35,6 +37,49 @@ function getSession(): QuizQuestion[] {
     ...shuffle(easy).slice(0, EASY_COUNT),
     ...shuffle(hard).slice(0, HARD_COUNT),
   ]).map(shuffleOptions);
+}
+
+function TruthTable({ table }: { table: QuizTable }) {
+  const highlightSet = new Set(table.highlights ?? []);
+  return (
+    <div className="mb-5 overflow-x-auto">
+      <table className="text-sm border-collapse rounded-lg overflow-hidden">
+        <thead>
+          <tr>
+            {table.headers.map((h) => (
+              <th
+                key={h}
+                className="px-3 py-1.5 border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 font-mono font-bold text-center text-slate-700 dark:text-slate-300 text-xs"
+              >
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.map((row, ri) => {
+            const hi = highlightSet.has(ri);
+            return (
+              <tr key={ri} className={hi ? "bg-blue-50 dark:bg-blue-950" : ""}>
+                {row.map((cell, ci) => (
+                  <td
+                    key={ci}
+                    className={`px-3 py-1 border border-slate-200 dark:border-slate-700 font-mono text-center text-xs ${
+                      hi
+                        ? "text-blue-700 dark:text-blue-300 font-semibold"
+                        : "text-slate-500 dark:text-slate-500"
+                    }`}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default function QuizPage() {
@@ -285,11 +330,19 @@ export default function QuizPage() {
         </span>
       </div>
 
-      {/* Question + hint */}
-      <div className="flex items-start gap-4 mb-7">
-        <p className="flex-1 text-slate-800 dark:text-slate-100 text-base sm:text-lg leading-relaxed font-medium whitespace-pre-line">
-          {q.question}
-        </p>
+      {/* Question + gate + hint toggle */}
+      <div className="flex items-start gap-4 mb-4">
+        <div className="flex-1 min-w-0 space-y-4">
+          <p className="text-slate-800 dark:text-slate-100 text-base sm:text-lg leading-relaxed font-medium whitespace-pre-line">
+            <MathText text={q.question} />
+          </p>
+          {/* Logic gate diagram — exibido abaixo do enunciado */}
+          {q.gate && (
+            <div className="inline-flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+              <LogicGate type={q.gate} />
+            </div>
+          )}
+        </div>
         <button
           onClick={() =>
             setHintVisible((p) => ({ ...p, [q.id]: !p[q.id] }))
@@ -306,10 +359,13 @@ export default function QuizPage() {
         </button>
       </div>
 
+      {/* Truth table */}
+      {q.table && <TruthTable table={q.table} />}
+
       {hintShown && (
         <div className="mb-6 border-l-2 border-orange-400 dark:border-orange-600 pl-4 py-1 animate-pop rounded-r-lg bg-orange-50 dark:bg-orange-950">
-          <p className="text-sm text-orange-700 dark:text-orange-300 leading-relaxed">
-            {q.hint}
+          <p className="text-sm text-orange-700 dark:text-orange-300 leading-relaxed whitespace-pre-line">
+            <MathText text={q.hint} />
           </p>
         </div>
       )}
@@ -325,7 +381,9 @@ export default function QuizPage() {
             className={optionClass(opt.id)}
           >
             <span className={letterClass(opt.id)}>{opt.id}</span>
-            <span className="text-sm leading-relaxed pt-0.5">{opt.text}</span>
+            <span className="text-sm leading-relaxed pt-0.5">
+              <MathText text={opt.text} />
+            </span>
           </button>
         ))}
       </div>
@@ -348,8 +406,8 @@ export default function QuizPage() {
           >
             {answered.correct ? "Correto" : "Incorreto"}
           </p>
-          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            {q.explanation}
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line">
+            <MathText text={q.explanation} />
           </p>
         </div>
       )}
