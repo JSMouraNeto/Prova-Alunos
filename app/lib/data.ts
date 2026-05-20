@@ -779,7 +779,7 @@ export const quizQuestions: QuizQuestion[] = [
     correct: "d",
     explanation:
       "Half Adder (Meio Somador): S = A⊕B, C = A·B. Para A=B=1: S=0, C=1 (1+1=10₂). Limitação: sem Carry_in, não pode ser estágio intermediário em somadores de múltiplos bits — para isso usa-se o Full Adder (3 entradas: A, B, Cin).",
-    hint: "Bizu: Half Adder = 2 entradas, 2 saídas (S=XOR, C=AND). Sem Cin. Full Adder = 3 entradas.",
+    hint: "Bizu: Half Adder: S = A⊕B, C = A·B, sem Cin.\nFull Adder: S = A⊕B⊕Cin, Cout = A·B + Cin·(A⊕B).",
     requiresCalc: false,
     footnote: "* Half Adder (Meio Somador): circuito que soma 2 bits (A, B). Saídas: S = A⊕B (Soma) e C = A·B (Carry-out). Não possui Carry-in — não pode ser usado como estágio intermediário de um somador multi-bit.\n* Full Adder: versão com 3 entradas (A, B, Cin), permitindo encadear bits.",
   },
@@ -1260,7 +1260,7 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Circuitos Combinacionais",
     difficulty: "muito difícil",
     question:
-      "Quais expressões implementam CORRETAMENTE o Half Adder?\nI. S = A XOR B\nII. Carry = A AND B\nIII. Carry = A OR B\nIV. S = A AND B",
+      "Quais expressões implementam CORRETAMENTE o Half Adder?\nI.   S = A ⊕ B\nII.  Carry = A · B\nIII. Carry = A + B\nIV.  S = A · B",
     table: {
       headers: ["A", "B", "S = A⊕B", "C = A·B"],
       rows: [
@@ -1279,8 +1279,8 @@ export const quizQuestions: QuizQuestion[] = [
     ],
     correct: "a",
     explanation:
-      "Half Adder: S = A⊕B (XOR — bit de soma), Carry = A·B (AND — gerado só quando A=B=1). III é errada: OR(0,1)=1, mas 0+1 não gera carry. IV é errada: AND(0,1)=0, mas a soma de 0+1=1.",
-    hint: "Bizu: S=XOR (diferente→1). Carry=AND (ambos 1→carry). OR é errado: OR(0,1)=1 mas não há carry em 0+1.",
+      "Half Adder: S = A⊕B (bit de soma), Carry = A·B (gerado só quando A=B=1). III é errada: A+B=1 para (0,1), mas 0+1 não gera carry. IV é errada: A·B=0 para (0,1), mas a soma de 0+1 deve ser 1.",
+    hint: "Bizu: S = A⊕B (⊕ = 1 quando entradas diferem). Carry = A·B (1 só com A=B=1). A+B (OR) é errado para carry.",
     requiresCalc: false,
     footnote: "* Half Adder (Meio Somador): circuito combinacional com 2 entradas (A, B) e 2 saídas: Soma (S) e Carry-out (C).\nS = A ⊕ B (XOR): 1 quando os bits diferem.\nC = A · B (AND): 1 somente quando A=B=1.\nNão possui Carry-in — para somar mais bits em sequência usa-se o Full Adder.",
   },
@@ -1564,7 +1564,7 @@ export const mindNodes: MindNode[] = [
       "Full Adder: S=A⊕B⊕Cin, Cout=A·B+Cin·(A⊕B) — soma 3 bits",
       "Somador ripple-carry: Full Adders encadeados, Cout→Cin do próximo",
     ],
-    formula: "HA: S=A⊕B, C=A·B | FA: Cout=A·B+Cin·(A⊕B)",
+    formula: "S = A⊕B⊕Cin | Cout = A·B + Cin·(A⊕B)",
   },
 ];
 
