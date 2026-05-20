@@ -760,7 +760,6 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "difícil",
     question:
       "Um circuito tem 2 entradas (A, B) e 2 saídas: S = A ⊕ B e C = A · B. Que circuito é esse e qual sua principal limitação?",
-    gate: "XOR",
     table: {
       headers: ["A", "B", "S = A⊕B", "C = A·B"],
       rows: [
@@ -790,11 +789,6 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "muito difícil",
     question:
       "Um Full Adder recebe A=1, B=0, Carry_in=1. Calcule a Soma S e o Carry_out.",
-    table: {
-      headers: ["A", "B", "Cin", "S = A⊕B⊕Cin", "Cout"],
-      rows: [["1", "0", "1", "?", "?"]],
-      highlights: [0],
-    },
     options: [
       { id: "a", text: "S=0, Cout=1" },
       { id: "b", text: "S=0, Cout=0" },
@@ -840,10 +834,9 @@ export const quizQuestions: QuizQuestion[] = [
       rows: [
         ["0", "0", "I₀", "1"],
         ["0", "1", "I₁", "0"],
-        ["1", "0", "I₂ ←", "1"],
+        ["1", "0", "I₂", "1"],
         ["1", "1", "I₃", "0"],
       ],
-      highlights: [2],
     },
     options: [
       { id: "a", text: "I₁  →  Y = 0" },
@@ -1102,10 +1095,9 @@ export const quizQuestions: QuizQuestion[] = [
         ["0","1","1","Y₃"],
         ["1","0","0","Y₄"],
         ["1","0","1","Y₅"],
-        ["1","1","0","Y₆ ←"],
+        ["1","1","0","Y₆"],
         ["1","1","1","Y₇"],
       ],
-      highlights: [6],
     },
     options: [
       { id: "a", text: "Y₆" },
@@ -1129,12 +1121,11 @@ export const quizQuestions: QuizQuestion[] = [
     table: {
       headers: ["Bit", "A (0111₂)", "B (1001₂)"],
       rows: [
-        ["b₃ (MSB)", "0", "1  ← B maior aqui"],
+        ["b₃ (MSB)", "0", "1"],
         ["b₂", "1", "0"],
         ["b₁", "1", "0"],
         ["b₀ (LSB)", "1", "1"],
       ],
-      highlights: [0],
     },
     options: [
       { id: "a", text: "A > B" },
@@ -1270,7 +1261,6 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "muito difícil",
     question:
       "Quais expressões implementam CORRETAMENTE o Half Adder?\nI. S = A XOR B\nII. Carry = A AND B\nIII. Carry = A OR B\nIV. S = A AND B",
-    gate: "XOR",
     table: {
       headers: ["A", "B", "S = A⊕B", "C = A·B"],
       rows: [
