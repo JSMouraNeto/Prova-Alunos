@@ -240,15 +240,6 @@ export default function QuizPage() {
                     <span className="text-slate-600 dark:text-slate-400 leading-snug line-clamp-1">
                       {qq.question.split("\n")[0]}
                     </span>
-                    <span
-                      className={`ml-2 text-[10px] font-medium ${
-                        qq.difficulty === "muito difícil"
-                          ? "text-red-400 dark:text-red-500"
-                          : "text-orange-400 dark:text-orange-500"
-                      }`}
-                    >
-                      {qq.difficulty}
-                    </span>
                   </div>
                 </div>
               );
@@ -359,15 +350,6 @@ export default function QuizPage() {
             </div>
           </div>
         </div>
-        <span
-          className={`text-[11px] font-semibold px-2.5 py-1 border rounded-full flex-shrink-0 mt-1 ${
-            q.difficulty === "muito difícil"
-              ? "text-red-500 dark:text-red-400 border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950"
-              : "text-orange-500 dark:text-orange-400 border-orange-200 dark:border-orange-900 bg-orange-50 dark:bg-orange-950"
-          }`}
-        >
-          {q.difficulty}
-        </span>
       </div>
 
       {/* Question + gate + hint toggle */}
