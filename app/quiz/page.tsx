@@ -157,6 +157,16 @@ export default function QuizPage() {
     const pct    = Math.round((score / total) * 100);
     const passed = pct >= 70;
 
+    const catStats = session.reduce((acc, qq) => {
+      if (!acc[qq.category]) acc[qq.category] = { correct: 0, total: 0 };
+      acc[qq.category].total++;
+      if (answers[qq.id]?.correct) acc[qq.category].correct++;
+      return acc;
+    }, {} as Record<string, { correct: number; total: number }>);
+    const catEntries = Object.entries(catStats).sort(
+      ([, a], [, b]) => a.correct / a.total - b.correct / b.total
+    );
+
     return (
       <div className="max-w-4xl mx-auto px-6 py-12 animate-fade-up">
         <div className="mb-10 pb-8 border-b border-slate-100 dark:border-slate-800">
@@ -239,6 +249,36 @@ export default function QuizPage() {
                     >
                       {qq.difficulty}
                     </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Per-category breakdown */}
+        <div className="mb-10">
+          <p className="text-[10px] font-bold tracking-widest text-slate-400 dark:text-slate-600 uppercase mb-4">
+            Por Categoria
+          </p>
+          <div className="space-y-2.5">
+            {catEntries.map(([cat, stats]) => {
+              const catPct = stats.total > 0 ? stats.correct / stats.total : 0;
+              const allCorrect = catPct === 1;
+              const allWrong   = catPct === 0;
+              return (
+                <div key={cat}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm text-slate-700 dark:text-slate-300">{cat}</span>
+                    <span className={`text-xs font-mono font-semibold ${allCorrect ? "text-green-600 dark:text-green-400" : allWrong ? "text-red-500 dark:text-red-400" : "text-orange-500 dark:text-orange-400"}`}>
+                      {stats.correct}/{stats.total}
+                    </span>
+                  </div>
+                  <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${allCorrect ? "bg-green-500" : allWrong ? "bg-red-400" : "bg-orange-400"}`}
+                      style={{ width: `${catPct * 100}%` }}
+                    />
                   </div>
                 </div>
               );

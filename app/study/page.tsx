@@ -1,6 +1,41 @@
 "use client";
 import { useState, useMemo } from "react";
-import { studyCards } from "@/app/lib/data";
+import { studyCards, QuizTable } from "@/app/lib/data";
+import MathText from "@/app/components/MathText";
+import LogicGate from "@/app/components/LogicGate";
+
+function CardTable({ table }: { table: QuizTable }) {
+  const highlighted = new Set(table.highlights ?? []);
+  return (
+    <div className="overflow-x-auto">
+      <table className="text-xs border-collapse rounded-lg overflow-hidden w-full">
+        <thead>
+          <tr>
+            {table.headers.map((h) => (
+              <th key={h} className="px-3 py-1.5 border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 font-mono font-bold text-center text-slate-700 dark:text-slate-300">
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.map((row, ri) => {
+            const hi = highlighted.has(ri);
+            return (
+              <tr key={ri} className={hi ? "bg-blue-50 dark:bg-blue-950" : ""}>
+                {row.map((cell, ci) => (
+                  <td key={ci} className={`px-3 py-1 border border-slate-200 dark:border-slate-700 font-mono text-center ${hi ? "text-blue-700 dark:text-blue-300 font-semibold" : "text-slate-500 dark:text-slate-500"}`}>
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 const ALL = "Todos";
 
@@ -107,7 +142,7 @@ export default function StudyPage() {
           {/* Front */}
           <div className="card-face bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col items-center justify-center gap-5 px-8 py-10 sm:px-12 text-center">
             <p className="text-slate-800 dark:text-slate-100 font-medium text-base sm:text-lg leading-relaxed max-w-lg">
-              {card.front}
+              <MathText text={card.front} />
             </p>
             {card.formula && (
               <code className="font-mono text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 border border-blue-100 dark:border-blue-900 px-3.5 py-1.5 rounded-lg">
@@ -142,6 +177,30 @@ export default function StudyPage() {
           </div>
         </div>
       </div>
+
+      {/* Extra reference — table and gate, shown only when card is flipped */}
+      {flipped && (card.table || card.gate) && (
+        <div className="mb-5 animate-pop space-y-3">
+          {card.gate && (
+            <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+              <LogicGate type={card.gate} w={120} />
+              <div className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Símbolo padrão ANSI da porta <span className="font-bold font-mono">{card.gate}</span>
+              </div>
+            </div>
+          )}
+          {card.table && (
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden">
+              <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-600 px-3 pt-2.5">
+                Tabela de Referência
+              </p>
+              <div className="p-3">
+                <CardTable table={card.table} />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Navigation row */}
       <div className="flex items-center justify-between mb-6">

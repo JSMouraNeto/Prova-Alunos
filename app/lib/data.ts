@@ -10,6 +10,8 @@ export interface StudyCard {
   front: string;
   back: string;
   formula?: string;
+  table?: QuizTable;   // shown below the card when flipped
+  gate?: QuizGate;     // gate symbol shown below the card when flipped
 }
 
 export interface QuizOption { id: string; text: string }
@@ -235,6 +237,12 @@ export const studyCards: StudyCard[] = [
     front: "O que são portas NAND e NOR? Por que são chamadas de portas UNIVERSAIS?",
     back: "NAND = NOT AND → saída 0 apenas quando TODAS entradas = 1\nNOR  = NOT OR  → saída 1 apenas quando TODAS entradas = 0\n\nSão UNIVERSAIS: com apenas NAND (ou só NOR) constrói-se qualquer outra porta:\n• NOT via NAND: ligue as duas entradas juntas\n• AND via NAND: NAND + NOT-NAND\n• OR  via NAND: De Morgan inverso\n\nBase real: CIs digitais são fabricados com só NAND ou só NOR.",
     formula: "NAND: ~(A·B) | NOR: ~(A+B)",
+    gate: "NAND",
+    table: {
+      headers: ["A", "B", "NAND", "NOR"],
+      rows: [["0","0","1","1"],["0","1","1","0"],["1","0","1","0"],["1","1","0","0"]],
+      highlights: [3],
+    },
   },
   {
     id: "s23",
@@ -242,8 +250,14 @@ export const studyCards: StudyCard[] = [
     color: "bg-violet-100 dark:bg-violet-950",
     textColor: "text-violet-800 dark:text-violet-200",
     front: "Explique XOR e XNOR com a tabela verdade completa. Qual identidade do XOR é mais útil?",
-    back: "XOR (⊕) — saída 1 quando entradas são DIFERENTES:\n(0,0)→0 | (0,1)→1 | (1,0)→1 | (1,1)→0\n\nXNOR (~⊕) — saída 1 quando entradas são IGUAIS:\n(0,0)→1 | (0,1)→0 | (1,0)→0 | (1,1)→1\n\nIdentidades úteis do XOR:\nA⊕0 = A    A⊕1 = ~A\nA⊕A = 0    A⊕~A = 1\n\nXOR é o núcleo do somador digital (bit de Soma = A⊕B).",
+    back: "XOR (⊕) — saída 1 quando entradas são DIFERENTES:\nA⊕0 = A  |  A⊕1 = ~A\nA⊕A = 0  |  A⊕~A = 1\n\nXOR é o núcleo do somador digital: Soma = A⊕B\nXNOR (~⊕) — inverso do XOR: saída 1 quando IGUAIS.",
     formula: "XOR: A⊕B | XNOR: ~(A⊕B) = A⊙B",
+    gate: "XOR",
+    table: {
+      headers: ["A", "B", "XOR (⊕)", "XNOR"],
+      rows: [["0","0","0","1"],["0","1","1","0"],["1","0","1","0"],["1","1","0","1"]],
+      highlights: [1, 2],
+    },
   },
   // ── Álgebra Booleana ──────────────────────
   {
@@ -260,8 +274,18 @@ export const studyCards: StudyCard[] = [
     color: "bg-indigo-100 dark:bg-indigo-950",
     textColor: "text-indigo-800 dark:text-indigo-200",
     front: "Enuncie o Teorema De Morgan nas duas formas. Como aplicar na prática?",
-    back: "1ª Lei: ~(A·B) = ~A + ~B\n    → NAND implementa esta lei\n\n2ª Lei: ~(A+B) = ~A · ~B\n    → NOR implementa esta lei\n\nRegra mnemônica: 'Quebre a barra, troque AND↔OR'\n\nExemplo com 3 variáveis:\n~(A·B·C) = ~A + ~B + ~C\n\n~(A+B+C) = ~A · ~B · ~C\n\nAplicação: converter NAND/NOR em portas equivalentes para simplificar circuitos.",
+    back: "1ª Lei: ~(A·B) = ~A + ~B  → NAND = NOR de complementos\n2ª Lei: ~(A+B) = ~A · ~B  → NOR = NAND de complementos\n\nMnemônico: 'Quebre a barra, troque AND↔OR'\n\n3 variáveis:\n~(A·B·C) = ~A + ~B + ~C\n~(A+B+C) = ~A · ~B · ~C\n\nUso: converter expressões com NAND/NOR para simplificar circuitos.",
     formula: "~(A·B)=~A+~B | ~(A+B)=~A·~B",
+    table: {
+      headers: ["A", "B", "¬(A·B)", "Ā+B̄", "Iguais?"],
+      rows: [
+        ["0","0","1","1","✓"],
+        ["0","1","1","1","✓"],
+        ["1","0","1","1","✓"],
+        ["1","1","0","0","✓"],
+      ],
+      highlights: [3],
+    },
   },
   {
     id: "s26",
@@ -351,8 +375,18 @@ export const studyCards: StudyCard[] = [
     color: "bg-teal-100 dark:bg-teal-950",
     textColor: "text-teal-800 dark:text-teal-200",
     front: "O que é um Flip-Flop JK? Como interpretar os sinais J e K em um diagrama temporal?",
-    back: "Flip-Flop JK: elemento de memória sequencial (1 bit)\nEntradas: J (Set), K (Reset), CK (Clock)\n\nTabela de excitação:\nJ=0, K=0 → mantém estado (Q sem alteração)\nJ=0, K=1 → Reset (Q → 0)\nJ=1, K=0 → Set (Q → 1)\nJ=1, K=1 → Toggle (Q inverte)\n\nLeitura no gráfico temporal:\n• Leia J e K em cada borda de subida do CK\n• Binário dos momentos 1,2,3 → ex: J=1,0,1 → J=101₂\n• K=0,0,1 → K=001₂\n\nDiferença do D flip-flop: JK tem modo toggle, D não.",
+    back: "FF JK: elemento de memória de 1 bit com 4 modos.\nEntradas: J (Set), K (Reset), CK (Clock)\n\nLeitura temporal: na cada borda de subida ↑ do clock, leia J e K.\nEx: 3 bordas com J=1,0,1 e K=0,0,1\n→ J=101₂, K=001₂ → converta para decimal\n\nDiferença do FF D: JK tem modo Toggle (J=K=1).",
     formula: "J=1,K=0→Set | J=0,K=1→Reset | J=K=1→Toggle",
+    table: {
+      headers: ["J", "K", "Q_próx", "Ação"],
+      rows: [
+        ["0","0","Q","Mantém"],
+        ["0","1","0","Reset"],
+        ["1","0","1","Set"],
+        ["1","1","Q̄","Toggle ⚡"],
+      ],
+      highlights: [3],
+    },
   },
 ];
 
@@ -1179,10 +1213,10 @@ export interface MindNode {
   formula?: string;
 }
 
-// Centro: (600, 410), raio de distribuição: 255
+// Centro: (600, 415), raio de distribuição: 320
 // Nós em círculo, ângulo = i × 360/14° a partir do topo (sentido horário)
-// x = 600 + 255·sin(θ), y = 410 − 255·cos(θ)
-export const mindmapCenter = { cx: 600, cy: 410, label: "Eletrônica\n& Sistemas\nDigitais" };
+// x = 600 + 320·sin(θ), y = 415 − 320·cos(θ)
+export const mindmapCenter = { cx: 600, cy: 415, label: "Eletrônica\n& Sistemas\nDigitais" };
 
 export const mindNodes: MindNode[] = [
   // ── Anel horário da direita: Elétrica analógica ──────────────────────────
@@ -1191,7 +1225,7 @@ export const mindNodes: MindNode[] = [
     label: "Tensão &\nCorrente",
     color: "#16a34a",
     textColor: "#fff",
-    cx: 600, cy: 155, r: 44,
+    cx: 600, cy: 95, r: 52,
     concepts: [
       "DDP (tensão) V: energia por unidade de carga — Volt (V)",
       "Corrente I = Q/T — unidade: Ampère (A)",
@@ -1209,7 +1243,7 @@ export const mindNodes: MindNode[] = [
     label: "Fontes de\nTensão",
     color: "#7c3aed",
     textColor: "#fff",
-    cx: 710, cy: 180, r: 44,
+    cx: 739, cy: 127, r: 52,
     concepts: [
       "Bateria primária: não recarregável (pilha alcalina, zinco-carbono)",
       "Bateria secundária: recarregável (Chumbo-ácido, Ni-HM, Íon-Lítio)",
@@ -1226,7 +1260,7 @@ export const mindNodes: MindNode[] = [
     label: "Estrutura\nAtômica",
     color: "#3b82f6",
     textColor: "#fff",
-    cx: 799, cy: 251, r: 44,
+    cx: 850, cy: 216, r: 52,
     concepts: [
       "Átomo: núcleo (prótons+, nêutrons) + eletrosfera (elétrons–)",
       "Número atômico Z = quantidade de prótons = elétrons no estado neutro",
@@ -1244,7 +1278,7 @@ export const mindNodes: MindNode[] = [
     label: "Resistência\n& Lei de Ohm",
     color: "#ea580c",
     textColor: "#fff",
-    cx: 848, cy: 353, r: 44,
+    cx: 912, cy: 344, r: 52,
     concepts: [
       "Resistência R: oposição ao fluxo de corrente — Ohm (Ω)",
       "Lei de Ohm: V = I × R (aplica a CC, CA e sinais digitais)",
@@ -1263,7 +1297,7 @@ export const mindNodes: MindNode[] = [
     label: "Potência\nElétrica",
     color: "#ca8a04",
     textColor: "#fff",
-    cx: 848, cy: 467, r: 44,
+    cx: 912, cy: 486, r: 52,
     concepts: [
       "Potência P: taxa de conversão de energia — Watt (W)",
       "P = V × I  (usa quando se sabe V e I)",
@@ -1282,7 +1316,7 @@ export const mindNodes: MindNode[] = [
     label: "Circuito\nSérie",
     color: "#db2777",
     textColor: "#fff",
-    cx: 799, cy: 569, r: 44,
+    cx: 850, cy: 614, r: 52,
     concepts: [
       "Mesma corrente I em todos os componentes",
       "RT = R₁ + R₂ + … + Rₙ",
@@ -1300,7 +1334,7 @@ export const mindNodes: MindNode[] = [
     label: "Circuito\nParalelo",
     color: "#e11d48",
     textColor: "#fff",
-    cx: 710, cy: 640, r: 44,
+    cx: 739, cy: 703, r: 52,
     concepts: [
       "Mesma tensão V em todos os componentes",
       "1/RT = 1/R₁ + 1/R₂ + … + 1/Rₙ",
@@ -1319,7 +1353,7 @@ export const mindNodes: MindNode[] = [
     label: "Circuito\nMisto",
     color: "#0f766e",
     textColor: "#fff",
-    cx: 600, cy: 665, r: 44,
+    cx: 600, cy: 735, r: 52,
     concepts: [
       "Combinação de partes em série e em paralelo no mesmo circuito",
       "Método: simplificar bloco a bloco (de dentro para fora)",
@@ -1338,7 +1372,7 @@ export const mindNodes: MindNode[] = [
     label: "Sistemas\nDigitais",
     color: "#0891b2",
     textColor: "#fff",
-    cx: 490, cy: 640, r: 44,
+    cx: 461, cy: 703, r: 52,
     concepts: [
       "Grandezas DISCRETAS: apenas 0 (LOW) e 1 (HIGH)",
       "Nível lógico TTL: LOW < 0,8V | HIGH > 2,0V",
@@ -1356,7 +1390,7 @@ export const mindNodes: MindNode[] = [
     label: "Clock &\nPulsos",
     color: "#0ea5e9",
     textColor: "#fff",
-    cx: 401, cy: 569, r: 44,
+    cx: 350, cy: 614, r: 52,
     concepts: [
       "Clock: onda quadrada periódica que sincroniza circuitos digitais",
       "Período T = t_HIGH + t_LOW",
@@ -1375,17 +1409,16 @@ export const mindNodes: MindNode[] = [
     label: "Flip-Flops\n& Memória",
     color: "#8b5cf6",
     textColor: "#fff",
-    cx: 352, cy: 467, r: 44,
+    cx: 288, cy: 486, r: 52,
     concepts: [
-      "Biestável: 2 estados estáveis, armazena 1 bit (Q e Q̄)",
-      "FF SR: Set(J=1,K=0)→Q=1 | Reset(J=0,K=1)→Q=0 | (1,1)→PROIBIDO",
-      "FF JK: resolve proibido com Toggle — J=K=1 → Q inverte",
-      "  J=0,K=0→mantém | J=0,K=1→Reset | J=1,K=0→Set | J=1,K=1→Toggle",
-      "FF D: Q_próx = D na borda do clock (captura o valor de D)",
-      "FF T: T=1→Toggle | T=0→Mantém",
-      "Latch: nível sensível | Flip-Flop: borda sensível (mais seguro)",
-      "Aplicações: registradores de deslocamento, contadores, SRAM",
-      "Leitura temporal: valor de J e K a cada borda de subida → palavra binária",
+      "Flip-Flop = circuito que 'lembra' 1 bit — diferente das portas comuns, ele guarda o valor mesmo depois que a entrada muda",
+      "Saída Q é o bit guardado; Q̄ (Q barra) é sempre o oposto de Q",
+      "Borda de clock: o FF só atualiza seu valor no momento exato em que o clock sobe de 0 → 1",
+      "FF D (mais simples): na borda do clock, Q copia o valor de D — é como tirar uma foto do dado",
+      "FF JK (mais completo): J=Set, K=Reset, J=K=1 faz Toggle (inverte) — sem estado proibido",
+      "FF T: T=1 → inverte o estado a cada clock (base dos contadores binários)",
+      "Latch vs Flip-Flop: Latch reage ao nível do clock (mais instável); FF reage só na borda (mais previsível)",
+      "Aplicações: registradores (armazenam bytes), contadores, SRAM e toda memória sequencial",
     ],
   },
   {
@@ -1393,17 +1426,16 @@ export const mindNodes: MindNode[] = [
     label: "Portas\nLógicas",
     color: "#dc2626",
     textColor: "#fff",
-    cx: 352, cy: 353, r: 44,
+    cx: 288, cy: 344, r: 52,
     concepts: [
-      "AND (·): saída 1 somente se TODAS as entradas = 1",
-      "OR (+): saída 1 se pelo menos UMA entrada = 1",
-      "NOT (¬): inverte — 0→1 e 1→0",
-      "NAND = NOT(AND): saída 0 somente quando todas entradas = 1",
-      "NOR = NOT(OR): saída 1 somente quando todas entradas = 0",
-      "XOR (⊕): saída 1 quando as entradas são DIFERENTES",
-      "XNOR: saída 1 quando entradas são IGUAIS (detector de igualdade)",
-      "NAND e NOR são UNIVERSAIS: qualquer função com apenas 1 tipo",
-      "Transistor CMOS: inversão de sinal — base dos CIs modernos",
+      "Porta = bloco eletrônico que executa UMA operação lógica (como um interruptor inteligente)",
+      "Entradas e saída só podem assumir dois valores: 0 (LOW ≈ 0V) ou 1 (HIGH ≈ 5V)",
+      "AND = 'E': as duas entradas precisam ser 1 para a saída ser 1 (como duas chaves em série)",
+      "OR = 'OU': basta UMA entrada ser 1 para a saída ser 1 (chaves em paralelo)",
+      "NOT = 'NÃO': inverte o valor — entra 0, sai 1; entra 1, sai 0",
+      "NAND e NOR são UNIVERSAIS — você pode construir qualquer circuito usando só um desses tipos",
+      "XOR = 'OU exclusivo': saída 1 somente quando as entradas são DIFERENTES",
+      "Circuitos reais (CPUs, memórias) são feitos de milhões dessas portas em série e paralelo",
     ],
     formula: "NAND: ¬(A·B) | NOR: ¬(A+B)",
   },
@@ -1412,7 +1444,7 @@ export const mindNodes: MindNode[] = [
     label: "Álgebra\nBooleana",
     color: "#c026d3",
     textColor: "#fff",
-    cx: 401, cy: 251, r: 44,
+    cx: 350, cy: 216, r: 52,
     concepts: [
       "Identidade: A+0=A | A·1=A",
       "Dominância: A+1=1 | A·0=0",
@@ -1433,7 +1465,7 @@ export const mindNodes: MindNode[] = [
     label: "Circuitos\nCombinacionais",
     color: "#059669",
     textColor: "#fff",
-    cx: 490, cy: 180, r: 44,
+    cx: 461, cy: 127, r: 52,
     concepts: [
       "Saída depende APENAS das entradas atuais — SEM memória",
       "MUX N:1: seleciona 1 de N entradas com ⌈log₂(N)⌉ bits de seleção",

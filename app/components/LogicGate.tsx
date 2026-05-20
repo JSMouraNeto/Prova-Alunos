@@ -2,6 +2,7 @@ export type GateType = "AND" | "OR" | "NOT" | "NAND" | "NOR" | "XOR";
 
 interface Props {
   type: GateType;
+  w?: number;  // largura em px (altura calculada pelo aspect ratio)
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -60,13 +61,14 @@ function Bubble({ cx }: { cx: number }) {
   );
 }
 
-function GateSVG({ type }: { type: GateType }) {
+function GateSVG({ type, w = 160 }: { type: GateType; w?: number }) {
+  const h = Math.round(w * 80 / 140);
   const bodyClass = "fill-white dark:fill-slate-900";
 
   /* ── AND ────────────────────────────────────────────────────── */
   if (type === "AND") {
     return (
-      <svg viewBox="0 0 140 80" width={160} height={91} aria-label="Porta AND">
+      <svg viewBox="0 0 140 80" width={w} height={h} aria-label="Porta AND">
         <Wires twoInputs />
         <OutputWire x={90} />
         {/* D-shape: retângulo + semicírculo à direita  */}
@@ -84,7 +86,7 @@ function GateSVG({ type }: { type: GateType }) {
   /* ── NAND ───────────────────────────────────────────────────── */
   if (type === "NAND") {
     return (
-      <svg viewBox="0 0 140 80" width={160} height={91} aria-label="Porta NAND">
+      <svg viewBox="0 0 140 80" width={w} height={h} aria-label="Porta NAND">
         <Wires twoInputs />
         <OutputWire x={93} />
         {/* D-shape comprimida + bolha */}
@@ -102,7 +104,7 @@ function GateSVG({ type }: { type: GateType }) {
   /* ── OR ─────────────────────────────────────────────────────── */
   if (type === "OR") {
     return (
-      <svg viewBox="0 0 140 80" width={160} height={91} aria-label="Porta OR">
+      <svg viewBox="0 0 140 80" width={w} height={h} aria-label="Porta OR">
         <Wires twoInputs />
         <OutputWire x={92} />
         {/*
@@ -127,7 +129,7 @@ function GateSVG({ type }: { type: GateType }) {
   /* ── NOR ────────────────────────────────────────────────────── */
   if (type === "NOR") {
     return (
-      <svg viewBox="0 0 140 80" width={160} height={91} aria-label="Porta NOR">
+      <svg viewBox="0 0 140 80" width={w} height={h} aria-label="Porta NOR">
         <Wires twoInputs />
         <OutputWire x={93} />
         {/* OR comprimida até ~82 + bolha */}
@@ -145,7 +147,7 @@ function GateSVG({ type }: { type: GateType }) {
   /* ── NOT ────────────────────────────────────────────────────── */
   if (type === "NOT") {
     return (
-      <svg viewBox="0 0 140 80" width={160} height={91} aria-label="Porta NOT">
+      <svg viewBox="0 0 140 80" width={w} height={h} aria-label="Porta NOT">
         <Wires twoInputs={false} />
         <OutputWire x={86} />
         {/* Triângulo apontando para a direita */}
@@ -162,7 +164,7 @@ function GateSVG({ type }: { type: GateType }) {
 
   /* ── XOR ────────────────────────────────────────────────────── */
   return (
-    <svg viewBox="0 0 140 80" width={160} height={91} aria-label="Porta XOR">
+    <svg viewBox="0 0 140 80" width={w} height={h} aria-label="Porta XOR">
       {/* Fios de entrada mais longos para passar o arco extra */}
       <line x1={0} y1={27} x2={30} y2={27} stroke={FC} strokeWidth={SW} />
       <line x1={0} y1={53} x2={30} y2={53} stroke={FC} strokeWidth={SW} />
@@ -185,13 +187,13 @@ function GateSVG({ type }: { type: GateType }) {
   );
 }
 
-export default function LogicGate({ type }: Props) {
+export default function LogicGate({ type, w }: Props) {
   return (
     <div
       className="text-slate-600 dark:text-slate-300"
       aria-label={`Símbolo: porta ${type}`}
     >
-      <GateSVG type={type} />
+      <GateSVG type={type} w={w} />
     </div>
   );
 }

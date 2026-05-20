@@ -32,7 +32,7 @@ const modules = [
     ),
     title: "Mapa Mental",
     description: "Visualize as conexões entre Átomo, Corrente, Ohm, Potência, Circuitos e Sistemas Digitais.",
-    badge: "7 nós",
+    badge: "14 nós",
     cta: null,
   },
   {
@@ -46,7 +46,7 @@ const modules = [
       </svg>
     ),
     title: "Prova",
-    description: "40 questões cobrindo toda a ementa: lei de Ohm, portas lógicas, álgebra booleana, MUX/DEMUX, comparadores e somadores.",
+    description: "40 questões cobrindo toda a ementa: lei de Ohm, portas lógicas, álgebra booleana, flip-flops, MUX/DEMUX, comparadores e somadores.",
     badge: "40 questões",
     cta: "Iniciar prova",
   },
@@ -58,9 +58,15 @@ const topics = [
   "Fontes de Tensão",
   "Lei de Ohm",
   "Potência Elétrica",
-  "Circuitos Série",
+  "Circuito Série",
   "Circuito Paralelo",
+  "Circuito Misto",
   "Sistemas Digitais",
+  "Clock & Pulsos",
+  "Portas Lógicas",
+  "Álgebra Booleana",
+  "Flip-Flops",
+  "Circuitos Combinacionais",
 ];
 
 export default function HomePage() {
