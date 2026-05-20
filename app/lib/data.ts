@@ -418,7 +418,7 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Circuitos em Série",
     difficulty: "muito difícil",
     question:
-      "Para o circuito da questão anterior (R₁ = 3 kΩ, R₂ = 5 kΩ, I = 4 mA, V_fonte = 32 V), quais são a resistência equivalente e a queda de tensão em R₂?",
+      "Circuito série com R₁ = 3 kΩ, R₂ = 5 kΩ e corrente I = 4 mA (V_fonte = 32 V). Quais são a resistência equivalente e a queda de tensão em R₂?",
     options: [
       { id: "a", text: "Req = 1,875 kΩ  e  V_R₂ = 32 V" },
       { id: "b", text: "Req = 8 kΩ  e  V_R₂ = 12 V" },
@@ -530,17 +530,17 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Álgebra Booleana",
     difficulty: "muito difícil",
     question:
-      "Avalie a expressão F = (C · B̄) + (B · A · C̄) para A=1, B=1, C=0.",
+      "Avalie a expressão F = (C · $\\bar{B}$) + (B · A · $\\bar{C}$) para A=1, B=1, C=0.",
     options: [
-      { id: "a", text: "F = 0  (B̄ = 1 com B=1, logo C·B̄ = 1)" },
-      { id: "b", text: "F = 0  (C̄ = 0 com C=0, logo segundo termo = 0)" },
+      { id: "a", text: "F = 0  ($\\bar{B}$=1 com B=1 e $\\bar{C}$=0 com C=0 — ambos os termos valem 0)" },
+      { id: "b", text: "F = 0  ($\\bar{C}$=0 com C=0, logo B·A·$\\bar{C}$ = 0)" },
       { id: "c", text: "F = 1" },
       { id: "d", text: "F = indeterminado  (variável repetida A e C)" },
     ],
     correct: "c",
     explanation:
-      "B=1 → B̄=0. C=0 → C̄=1. Primeiro termo: C·B̄ = 0·0 = 0. Segundo termo: B·A·C̄ = 1·1·1 = 1. F = 0 OR 1 = 1. Atenção: B=1 → B̄=0 (não 1). C=0 → C̄=1 (não 0). Calcule os complementos antes de substituir.",
-    hint: "Bizu: B=1→B̄=0. C=0→C̄=1. Substitua passo a passo: cada produto (AND), depois OR final.",
+      "B=1 → $\\bar{B}$=0. C=0 → $\\bar{C}$=1. Primeiro termo: C·$\\bar{B}$ = 0·0 = 0. Segundo termo: B·A·$\\bar{C}$ = 1·1·1 = 1. F = 0 OR 1 = 1. Atenção: B=1 → $\\bar{B}$=0 (não 1). C=0 → $\\bar{C}$=1 (não 0). Calcule os complementos antes de substituir.",
+    hint: "Bizu: B=1→$\\bar{B}$=0. C=0→$\\bar{C}$=1. Substitua passo a passo: cada produto (AND), depois OR final.",
     requiresCalc: false,
   },
   {
@@ -548,17 +548,17 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Álgebra Booleana",
     difficulty: "muito difícil",
     question:
-      "Simplifique: F = (A · B̄) + (A · B · C̄). Qual é a forma mínima?",
+      "Avalie F = ($\\bar{A}$·B) + (A·$\\bar{C}$) para A=1, B=0, C=0.",
     options: [
-      { id: "a", text: "F = A · B̄" },
-      { id: "b", text: "F = A · (B̄ + C̄)" },
-      { id: "c", text: "F = A + B̄" },
-      { id: "d", text: "F = A · B · C̄" },
+      { id: "a", text: "F = 0  ($\\bar{A}$=0 zera o primeiro termo; $\\bar{C}$=0 zera o segundo)" },
+      { id: "b", text: "F = 1" },
+      { id: "c", text: "F = 0  ($\\bar{A}$·B = 0·0 = 0; A·$\\bar{C}$ = 1·0 = 0, pois C=0)" },
+      { id: "d", text: "F = indeterminado  (A aparece normal e complementado)" },
     ],
     correct: "b",
     explanation:
-      "Fatore A: F = A·(B̄ + B·C̄). Simplifique B̄ + B·C̄ usando distributiva do OR: (B̄+B)·(B̄+C̄) = 1·(B̄+C̄) = B̄+C̄. Logo F = A·(B̄+C̄). Opção a é mais restritiva que o correto.",
-    hint: "Bizu: Fatore A. Depois: B̄ + B·C̄ = (B̄+B)·(B̄+C̄) = B̄+C̄. Distributiva do OR.",
+      "A=1 → $\\bar{A}$=0. C=0 → $\\bar{C}$=1. Primeiro termo: $\\bar{A}$·B = 0·0 = 0. Segundo termo: A·$\\bar{C}$ = 1·1 = 1. F = 0+1 = 1. Atenção: C=0 → $\\bar{C}$=1 (o complemento de 0 é 1, não 0).",
+    hint: "Bizu: A=1→$\\bar{A}$=0. C=0→$\\bar{C}$=1. Calcule cada complemento ANTES de substituir nas expressões.",
     requiresCalc: false,
   },
 
@@ -584,14 +584,14 @@ export const quizQuestions: QuizQuestion[] = [
       highlights: [1, 3, 4],
     },
     options: [
-      { id: "a", text: "F = Ā·B̄·C + Ā·B·C + A·B̄·C̄" },
-      { id: "b", text: "F = A·B·C + A·B̄·C + Ā·B·C̄" },
-      { id: "c", text: "F = Ā·B̄·C̄ + Ā·B̄·C + A·B̄·C̄" },
-      { id: "d", text: "F = A·B̄·C + Ā·B·C̄ + A·B·C" },
+      { id: "a", text: "$F = \\bar{A}\\cdot\\bar{B}\\cdot C + \\bar{A}\\cdot B\\cdot C + A\\cdot\\bar{B}\\cdot\\bar{C}$" },
+      { id: "b", text: "$F = A\\cdot B\\cdot C + A\\cdot\\bar{B}\\cdot C + \\bar{A}\\cdot B\\cdot\\bar{C}$" },
+      { id: "c", text: "$F = \\bar{A}\\cdot\\bar{B}\\cdot\\bar{C} + \\bar{A}\\cdot\\bar{B}\\cdot C + A\\cdot\\bar{B}\\cdot\\bar{C}$" },
+      { id: "d", text: "$F = A\\cdot\\bar{B}\\cdot C + \\bar{A}\\cdot B\\cdot\\bar{C} + A\\cdot B\\cdot C$" },
     ],
     correct: "a",
     explanation:
-      "Linhas com F=1: linha1(0,0,1), linha3(0,1,1), linha4(1,0,0). Regra: var=1→normal, var=0→complementada, liga com AND. Linha1: Ā·B̄·C. Linha3: Ā·B·C. Linha4: A·B̄·C̄. F = Ā·B̄·C + Ā·B·C + A·B̄·C̄.",
+      "Linhas com F=1: linha1(0,0,1), linha3(0,1,1), linha4(1,0,0). Regra: var=1→normal, var=0→complementada, liga com AND. Linha1: $\\bar{A}\\cdot\\bar{B}\\cdot C$. Linha3: $\\bar{A}\\cdot B\\cdot C$. Linha4: $A\\cdot\\bar{B}\\cdot\\bar{C}$. F = $\\bar{A}\\cdot\\bar{B}\\cdot C + \\bar{A}\\cdot B\\cdot C + A\\cdot\\bar{B}\\cdot\\bar{C}$.",
     hint: "Bizu: Minterm = linha F=1. Var=1→normal, var=0→complementada. Liga com AND. Some todos com OR.",
     requiresCalc: false,
   },
@@ -616,14 +616,14 @@ export const quizQuestions: QuizQuestion[] = [
       highlights: [0, 2, 5, 6, 7],
     },
     options: [
-      { id: "a", text: "F = Ā·B̄·C + Ā·B·C + A·B̄·C̄" },
-      { id: "b", text: "F = (A+B+C)·(A+B̄+C)·(Ā+B+C̄)·(Ā+B̄+C)·(Ā+B̄+C̄)" },
-      { id: "c", text: "F = (Ā+B̄+C̄)·(Ā+B+C̄)·(A+B̄+C)" },
-      { id: "d", text: "F = (A+B+C)·(A+B+C̄)" },
+      { id: "a", text: "$F = \\bar{A}\\cdot\\bar{B}\\cdot C + \\bar{A}\\cdot B\\cdot C + A\\cdot\\bar{B}\\cdot\\bar{C}$" },
+      { id: "b", text: "$F = (A+B+C)\\cdot(A+\\bar{B}+C)\\cdot(\\bar{A}+B+\\bar{C})\\cdot(\\bar{A}+\\bar{B}+C)\\cdot(\\bar{A}+\\bar{B}+\\bar{C})$" },
+      { id: "c", text: "$F = (\\bar{A}+\\bar{B}+\\bar{C})\\cdot(\\bar{A}+B+\\bar{C})\\cdot(A+\\bar{B}+C)$" },
+      { id: "d", text: "$F = (A+B+C)\\cdot(A+B+\\bar{C})$" },
     ],
     correct: "b",
     explanation:
-      "Linhas com F=0: 0(0,0,0), 2(0,1,0), 5(1,0,1), 6(1,1,0), 7(1,1,1). Regra de maxterm: var=0→normal, var=1→complementada, liga com OR. m0: A+B+C. m2: A+B̄+C. m5: Ā+B+C̄. m6: Ā+B̄+C. m7: Ā+B̄+C̄. F = produto de todos os 5 maxtermos.",
+      "Linhas com F=0: 0(0,0,0), 2(0,1,0), 5(1,0,1), 6(1,1,0), 7(1,1,1). Regra de maxterm: var=0→normal, var=1→complementada, liga com OR. m0: A+B+C. m2: $A+\\bar{B}+C$. m5: $\\bar{A}+B+\\bar{C}$. m6: $\\bar{A}+\\bar{B}+C$. m7: $\\bar{A}+\\bar{B}+\\bar{C}$. F = produto de todos os 5 maxtermos.",
     hint: "Bizu: Maxterm = linha F=0. Regra INVERSA: var=0→normal, var=1→complementada. Liga com OR. Multiplica tudo com AND.",
     requiresCalc: false,
   },
@@ -647,13 +647,13 @@ export const quizQuestions: QuizQuestion[] = [
     options: [
       { id: "a", text: "F = A·B  →  AND" },
       { id: "b", text: "F = A+B  →  OR" },
-      { id: "c", text: "F = Ā·B + A·B̄  →  XOR" },
-      { id: "d", text: "F = Ā·B̄ + A·B  →  XNOR" },
+      { id: "c", text: "$F = \\bar{A}\\cdot B + A\\cdot\\bar{B}$ → XOR" },
+      { id: "d", text: "$F = \\bar{A}\\cdot\\bar{B} + A\\cdot B$ → XNOR" },
     ],
     correct: "c",
     explanation:
-      "Mintermos: (0,1)→Ā·B e (1,0)→A·B̄. F = Ā·B + A·B̄ = A⊕B (XOR). Confirmação: (0,0)→0; (0,1)→1; (1,0)→1; (1,1)→0. XOR=1 quando entradas DIFERENTES. É o bit de Soma do Half Adder.",
-    hint: "Bizu: Dois mintermos com entradas diferentes = XOR. F = Ā·B + A·B̄ = A⊕B.",
+      "Mintermos: (0,1)→$\\bar{A}\\cdot B$ e (1,0)→$A\\cdot\\bar{B}$. F = $\\bar{A}\\cdot B + A\\cdot\\bar{B}$ = A⊕B (XOR). Confirmação: (0,0)→0; (0,1)→1; (1,0)→1; (1,1)→0. XOR=1 quando entradas DIFERENTES. É o bit de Soma do Half Adder.",
+    hint: "Bizu: Dois mintermos com entradas diferentes = XOR. F = $\\bar{A}\\cdot B + A\\cdot\\bar{B}$ = A⊕B.",
     requiresCalc: false,
   },
 
@@ -701,7 +701,16 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Clock & Pulsos",
     difficulty: "muito difícil",
     question:
-      "Num diagrama temporal de flip-flop JK, os sinais são lidos em 3 bordas de subida do clock (azul). Momento 1: J=1,K=0. Momento 2: J=0,K=0. Momento 3: J=1,K=1. Quais os valores binários de J e K?",
+      "Num diagrama temporal de flip-flop JK, os sinais J e K são lidos em 3 bordas de subida do clock, conforme a tabela abaixo. Quais os valores binários de J e K?",
+    table: {
+      headers: ["Borda ↑", "J", "K"],
+      rows: [
+        ["1", "1", "0"],
+        ["2", "0", "0"],
+        ["3", "1", "1"],
+      ],
+      highlights: [0, 2],
+    },
     options: [
       { id: "a", text: "J = 110  e  K = 001" },
       { id: "b", text: "J = 101  e  K = 001" },
@@ -720,7 +729,16 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Clock & Pulsos",
     difficulty: "muito difícil",
     question:
-      "No mesmo diagrama, um segundo canal (verde) registra as mesmas bordas. Momento 1: J=1,K=0. Momento 2: J=0,K=0. Momento 3: J=1,K=0. Quais os valores binários?",
+      "Um flip-flop JK tem suas entradas monitoradas em 3 bordas de subida do clock, conforme a tabela abaixo. Quais os valores binários de J e K?",
+    table: {
+      headers: ["Borda ↑", "J", "K"],
+      rows: [
+        ["1", "1", "0"],
+        ["2", "0", "0"],
+        ["3", "1", "0"],
+      ],
+      highlights: [0],
+    },
     options: [
       { id: "a", text: "J = 101  e  K = 001" },
       { id: "b", text: "J = 101  e  K = 000" },
@@ -729,10 +747,10 @@ export const quizQuestions: QuizQuestion[] = [
     ],
     correct: "b",
     explanation:
-      "Leitura nos momentos 1,2,3 — J: 1,0,1 → J=101. K: 0,0,0 → K=000. Note que no canal verde o momento 3 tem K=0 (diferente do canal azul onde K=1 no momento 3).",
-    hint: "Bizu: Leia cada sinal separadamente. J=bit1 bit2 bit3. K=bit1 bit2 bit3. Cada canal pode ter valores diferentes.",
+      "Leitura nas bordas 1,2,3 — J: 1,0,1 → J=101. K: 0,0,0 → K=000. Concatene da esquerda para a direita: borda 1 é o bit mais significativo.",
+    hint: "Bizu: Leia J e K a cada borda de subida do CK. Concatene: J=bit1 bit2 bit3. K=bit1 bit2 bit3.",
     requiresCalc: false,
-    footnote: "* Flip-Flop JK: biestável com entradas J e K lidas na borda de subida (↑) do clock. Cada canal (cor) é um sinal independente. Leia J e K nos mesmos instantes.",
+    footnote: "* Flip-Flop JK: biestável com entradas J e K lidas na borda de subida (↑) do clock. Leia o valor de J e K em cada pulso e concatene os bits para formar a palavra binária.",
   },
 
   // ── BLOCO 7: Meio Somador e Somadores ─────────────────────────────────────
@@ -743,6 +761,16 @@ export const quizQuestions: QuizQuestion[] = [
     question:
       "Um circuito tem 2 entradas (A, B) e 2 saídas: S = A ⊕ B e C = A · B. Que circuito é esse e qual sua principal limitação?",
     gate: "XOR",
+    table: {
+      headers: ["A", "B", "S = A⊕B", "C = A·B"],
+      rows: [
+        ["0", "0", "0", "0"],
+        ["0", "1", "1", "0"],
+        ["1", "0", "1", "0"],
+        ["1", "1", "0", "1"],
+      ],
+      highlights: [3],
+    },
     options: [
       { id: "a", text: "Full Adder — não suporta operações de subtração" },
       { id: "b", text: "Comparador — não distingue magnitude entre A e B" },
@@ -762,6 +790,11 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "muito difícil",
     question:
       "Um Full Adder recebe A=1, B=0, Carry_in=1. Calcule a Soma S e o Carry_out.",
+    table: {
+      headers: ["A", "B", "Cin", "S = A⊕B⊕Cin", "Cout"],
+      rows: [["1", "0", "1", "?", "?"]],
+      highlights: [0],
+    },
     options: [
       { id: "a", text: "S=0, Cout=1" },
       { id: "b", text: "S=0, Cout=0" },
@@ -802,6 +835,16 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "muito difícil",
     question:
       "MUX 4:1 com I₀=1, I₁=0, I₂=1, I₃=0. Seletor S₁=1, S₀=0. Qual entrada é selecionada e qual é Y?",
+    table: {
+      headers: ["S₁", "S₀", "Entrada selecionada", "Valor"],
+      rows: [
+        ["0", "0", "I₀", "1"],
+        ["0", "1", "I₁", "0"],
+        ["1", "0", "I₂ ←", "1"],
+        ["1", "1", "I₃", "0"],
+      ],
+      highlights: [2],
+    },
     options: [
       { id: "a", text: "I₁  →  Y = 0" },
       { id: "b", text: "I₃  →  Y = 0" },
@@ -860,7 +903,7 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Portas Lógicas",
     difficulty: "muito difícil",
     question:
-      "Aplique o Teorema De Morgan para simplificar $\\overline{A \\cdot B \\cdot C}$:",
+      "Qual é o resultado do Teorema De Morgan aplicado a $\\overline{A \\cdot B \\cdot C}$?",
     gate: "NAND",
     options: [
       { id: "a", text: "$\\bar{A}$ · $\\bar{B}$ · $\\bar{C}$" },
@@ -879,17 +922,17 @@ export const quizQuestions: QuizQuestion[] = [
     category: "Álgebra Booleana",
     difficulty: "muito difícil",
     question:
-      "Simplifique: F = A·B + A·B̄. Qual é o resultado?",
+      "Qual lei booleana é aplicada para concluir que $A\\cdot B + A\\cdot\\bar{B} = A$?",
     options: [
-      { id: "a", text: "F = A·B" },
-      { id: "b", text: "F = B" },
-      { id: "c", text: "F = A + B" },
-      { id: "d", text: "F = A" },
+      { id: "a", text: "Lei da Idempotência: X + X = X" },
+      { id: "b", text: "Lei da Adjacência: $X\\cdot Y + X\\cdot\\bar{Y} = X$" },
+      { id: "c", text: "Lei da Absorção: X + X·Y = X" },
+      { id: "d", text: "Lei da Distribuição: X·(Y + Z) = X·Y + X·Z" },
     ],
-    correct: "d",
+    correct: "b",
     explanation:
-      "F = A·B + A·B̄ = A·(B + B̄) = A·1 = A. Lei da Adjacência: X·Y + X·Ȳ = X. B se cancela completamente — a saída depende apenas de A.",
-    hint: "Bizu: A·B + A·B̄ = A·(B+B̄) = A·1 = A. Lei da adjacência: X·Y + X·Ȳ = X.",
+      "A lei da Adjacência ($X\\cdot Y + X\\cdot\\bar{Y} = X$) elimina B: $A\\cdot B + A\\cdot\\bar{B}$ = A·(B+$\\bar{B}$) = A·1 = A. A variável B some porque B + $\\bar{B}$ = 1 (lei do complemento). A lei da Distribuição apenas prepara o fator A — a etapa decisiva é a Adjacência.",
+    hint: "Bizu: Reconheça o padrão $X\\cdot Y + X\\cdot\\bar{Y} = X$. Fatore A e use B+$\\bar{B}$ = 1.",
     requiresCalc: false,
   },
 
@@ -1050,6 +1093,20 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "muito difícil",
     question:
       "Um decodificador 3×8 recebe A₂A₁A₀ = 110₂. Qual saída Yn fica ativa?",
+    table: {
+      headers: ["A₂", "A₁", "A₀", "Saída ativa"],
+      rows: [
+        ["0","0","0","Y₀"],
+        ["0","0","1","Y₁"],
+        ["0","1","0","Y₂"],
+        ["0","1","1","Y₃"],
+        ["1","0","0","Y₄"],
+        ["1","0","1","Y₅"],
+        ["1","1","0","Y₆ ←"],
+        ["1","1","1","Y₇"],
+      ],
+      highlights: [6],
+    },
     options: [
       { id: "a", text: "Y₆" },
       { id: "b", text: "Y₁" },
@@ -1069,6 +1126,16 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "muito difícil",
     question:
       "Comparador de 4 bits: A = 0111₂, B = 1001₂. Qual saída fica em nível ALTO?",
+    table: {
+      headers: ["Bit", "A (0111₂)", "B (1001₂)"],
+      rows: [
+        ["b₃ (MSB)", "0", "1  ← B maior aqui"],
+        ["b₂", "1", "0"],
+        ["b₁", "1", "0"],
+        ["b₀ (LSB)", "1", "1"],
+      ],
+      highlights: [0],
+    },
     options: [
       { id: "a", text: "A > B" },
       { id: "b", text: "A = B" },
@@ -1146,6 +1213,16 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "difícil",
     question:
       "Qual é a tabela de excitação CORRETA do Flip-Flop JK?",
+    table: {
+      headers: ["J", "K", "Q_próx", "Ação"],
+      rows: [
+        ["0", "0", "Q", "Mantém"],
+        ["0", "1", "0", "Reset"],
+        ["1", "0", "1", "Set"],
+        ["1", "1", "Q̄", "Toggle"],
+      ],
+      highlights: [3],
+    },
     options: [
       { id: "a", text: "00→Toggle, 01→Set, 10→Reset, 11→Mantém" },
       { id: "b", text: "00→Mantém, 01→Reset, 10→Set, 11→Toggle" },
@@ -1165,6 +1242,16 @@ export const quizQuestions: QuizQuestion[] = [
     difficulty: "muito difícil",
     question:
       "Um somador de 4 bits calcula 0110₂ + 0111₂. Qual é o resultado e há Carry out?",
+    table: {
+      headers: ["Bit", "A", "B", "Cin", "S", "Cout"],
+      rows: [
+        ["b₀ (LSB)", "0", "1", "0", "1", "0"],
+        ["b₁", "1", "1", "0", "0", "1"],
+        ["b₂", "1", "1", "1", "1", "1"],
+        ["b₃ (MSB)", "0", "0", "1", "1", "0"],
+      ],
+      highlights: [3],
+    },
     options: [
       { id: "a", text: "Resultado = 1101₂ = 13₁₀,  Cout = 0" },
       { id: "b", text: "Resultado = 1110₂ = 14₁₀,  Cout = 0" },
@@ -1184,6 +1271,16 @@ export const quizQuestions: QuizQuestion[] = [
     question:
       "Quais expressões implementam CORRETAMENTE o Half Adder?\nI. S = A XOR B\nII. Carry = A AND B\nIII. Carry = A OR B\nIV. S = A AND B",
     gate: "XOR",
+    table: {
+      headers: ["A", "B", "S = A⊕B", "C = A·B"],
+      rows: [
+        ["0", "0", "0", "0"],
+        ["0", "1", "1", "0"],
+        ["1", "0", "1", "0"],
+        ["1", "1", "0", "1"],
+      ],
+      highlights: [3],
+    },
     options: [
       { id: "a", text: "I e II" },
       { id: "b", text: "I e III" },
